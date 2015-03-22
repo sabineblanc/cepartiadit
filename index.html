@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <title>Ce parti a dit</title>
+    <meta property="og:image" content="http://sabineblanc.net/cepartiadit/gueant.jpg" />
+    <meta property="og:title" content="Ce parti a dit" />
+    <meta property="og:url" content="http://sabineblanc.net/cepartiadit/" />
+    <meta property="og:local" content="fr_FR" />
+    <meta property="og:description" content="Un petit jeu populiste, comme on les aime bien." />
+    <meta property="description" content="Un petit jeu populiste, comme on les aime bien." />
+    <meta property="twitter:image:src" content="http://sabineblanc.net/cepartiadit/gueant.jpg" />
+    <meta property="twitter:title" content="Ce parti a dit" />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:description" content="Un petit jeu populiste, comme on les aime bien." />
+    <meta property="twitter:site" content="@sabineblanc" />
+
+
+    <link rel="stylesheet" href="droiteextremedroite.css">
+
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<img src="index.png" height='25' width='50' id="imageUn">
+
+<h1 id="titre1"><a href="http://sabineblanc.net/cepartiadit/" id="cd">Cette phrase vient-elle...</a></h1>
+
+<h1 id="titre2" name="gauche">de gauche ?</h1>
+
+<h1 id="titre3" name="droite">de droite ? </h1>
+
+<h1 id="titre4" name="extremeDroite">d'extrême-droite ?</h1>
+
+
+<div id="citation">Un petit jeu populiste, comme on les aime bien.</div>
+<div id="resultat"></div>
+<div id="tete"></div>
+<button type="submit" id="auSuivant">Jouons un peu</button>
+<div id="score"></div>
+<div id="credit">GNU GPL V2 Sabine Blanc - <a href="credit.html" target="_blank" id="cdt">Crédits des magnifiques détourés</a></div>
+
+
+<script>
+    var phrases = [
+                ["Vous en avez assez de cette bande de racailles ? Eh bien on va vous en débarrasser.", "droite", "Nicolas Sarkozy", "de l'UMP", "'sarkozy.jpg'"],
+                ["À travers le business et l'action sociale, les Qataris s'efforcent de diffuser parmi les jeunes Français d'origine musulmane la religion-idéologie wahhabite.", "extremeDroite", "Marine Le Pen", "du FN", "'lepen.jpg'"],
+                ["Les Roms ont vocation à revenir en Roumanie ou en Bulgarie.", "gauche", "Manuel Valls", "du PS", "'valls.jpg'"],
+                ["Je demande à Pôle Emploi de renforcer les contrôles pour vérifier que les gens cherchent bien un emploi.", "gauche", "François Rebsamen", "du PS", "'rebsamen.jpg'"],
+                ["L'homosexualité n'est pas un délit, mais elle constitue une anomalie biologique et sociale.", "extremeDroite", "Jean-Marie Le Pen", "du FN", "'lepenJM.jpg'"],
+                ["Les Français, à force d'immigration incontrôlée, ont parfois le sentiment de ne plus être chez eux, ou bien ils ont le sentiment de voir des pratiques (...) qui s'imposent à eux et qui ne correspondent pas aux règles de notre vie sociale.", "droite", "Claude Guéant", "de l'UMP", "'gueant.jpg'"],
+                ["Si vous n'avez rien à vous reprocher, vous n'avez pas à avoir peur d'être filmés !", "droite", "Brice Hortefeux", "de l'UMP", "'hortefeux.jpg'"],
+                ["Sueurs froides à la lecture des dispositions de la nouvelle loi terroriste... Même plus envie de plaisanter sur les massacres de chatons!", "droite", "Laure de la Raudière", "de l'UMP", "'delaraudiere.jpg'"],
+                ["Nous pourrions autoriser les entreprises et les branches, dans le cadre d'accords majoritaires, à déroger aux règles de temps de travail et de rémunération.", "gauche", "Emmanuel Macron", "d'un gouvernement socialiste", "'macron.jpg'"],
+                ["(les immigrés tunisiens) sont maintenant sur le territoire français et donc la solution ferme mais humaine de régler ce problème, c'est de les raccompagner dans la réinsertion dans ce pays.", "gauche", "Ségolène Royal", "du PS", "'royal.jpg'"]
+
+            ]
+            ;
+
+    $(document).ready(function () {
+        var indicePhraseActuelle = -1;
+        var score = 0;
+        var stop = phrases.length;
+        /* 3 */
+
+
+        $("#auSuivant").click(function () {
+            indicePhraseActuelle++;
+            $("#tete").fadeOut(300);
+
+            if (indicePhraseActuelle == stop) {
+
+                $("button").hide();
+                $("#citation").hide();
+                $("#resultat").hide();
+                $('#score').html("Vous avez obtenu " + score + "/" + phrases.length);
+                setTimeout(function () {
+                    $('#score').fadeOut(1000);
+                }, 2500);
+
+                setTimeout(function () {
+                    $('#score').html("Et n'oubliez pas : si la politique vous répugne, changez-la.<br>Il y a mille et une façon de s'investir dans la cité, dans ou hors des partis.").fadeIn(600);
+                }, 3500);
+            }
+
+            if (indicePhraseActuelle == 0) {
+
+                setTimeout(function () {
+                    $("#imageUn").fadeOut(300).fadeIn(300).fadeOut(300).fadeIn(300).fadeOut(300).fadeIn(300).fadeOut(300).fadeIn(300);
+                }, 1000);
+            }
+
+
+            var ligne = phrases[indicePhraseActuelle];
+            var citation = ligne[0];
+            $("#citation").html('"' + citation + '"').addClass("citation2");
+            $("#resultat").fadeOut(200);
+            $("button").fadeOut(200);
+
+        });
+
+        $("h1").click(function () {
+            var ligne = phrases[indicePhraseActuelle];
+            var couleur = ligne[1];
+            var nom = ligne[2];
+            var parti = ligne[3];
+            var image = ligne[4];
+            var reponse = $(this).attr("name");
+
+
+            if (indicePhraseActuelle == stop - 1) {
+                setTimeout(function () {
+                $('button').html("Découvrez votre score");
+                }, 1000);
+                setTimeout(function () {
+                    $('#tete').hide();
+                }, 1000);
+
+            }
+
+
+            if (couleur == reponse) {
+                $("#resultat").html("Cette phrase a bien été prononcée par " + nom + ", membre " + parti).fadeIn(300);
+                $("#tete").html("<img src=" + image + ">").fadeIn(300);
+
+                setTimeout(function () {
+                    $("button").fadeIn(200);
+                }, 1000);
+                score++;
+
+            } else {
+                $("#resultat").html("Eh non, cette phrase a été prononcée par " + nom + ", membre " + parti).fadeIn(300);
+                $("#tete").html("<img src=" + image + ">").fadeIn(300);
+
+                setTimeout(function () {
+                    $("button").fadeIn(200);
+                }, 1000);
+
+            }
+        });
+
+    });
+
+</script>
+
+</body>
+</html>
